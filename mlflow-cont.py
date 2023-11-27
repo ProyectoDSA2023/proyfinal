@@ -84,13 +84,14 @@ experiment = mlflow.set_experiment("sklearn-contratos")
 # Aquí se ejecuta MLflow sin especificar un nombre o id del experimento. MLflow los crea un experimento para este cuaderno por defecto y guarda las características del experimento y las métricas definidas. 
 # Para ver el resultado de las corridas haga click en Experimentos en el menú izquierdo. 
 with mlflow.start_run(experiment_id=experiment.experiment_id):
-    # defina los parámetros del modelo
-    n_clusters=3
-    max_iter=100
+    # defina los parámetros del modelo    
+    n_clusters=4
+    max_iter=300
+    n_init= 15
 
     # Cree el modelo con los parámetros definidos y entrénelo
     
-    modelo=KMeans(n_clusters=n_clusters,max_iter=max_iter)
+    modelo=KMeans(n_clusters=n_clusters,max_iter=max_iter, n_init=n_init)
     modelo.fit(dfCluster)
     # Realice predicciones de prueba
     modelo.predict(dfCluster)
@@ -98,6 +99,8 @@ with mlflow.start_run(experiment_id=experiment.experiment_id):
     # Registre los parámetros
     mlflow.log_param("n_clusters", n_clusters)
     mlflow.log_param("max_iter", max_iter)
+    mlflow.log_param("n_init", n_init)
+
   
     # Registre el modelo
     mlflow.sklearn.log_model(modelo, "cluster-model")
